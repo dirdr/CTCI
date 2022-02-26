@@ -3,19 +3,23 @@
  */
 public static boolean palindrome(Node head) {
     Stack<Integer> stack = new Stack<>();
-    Node current = head;
-    Node reversed_head = Utils.reverse_linked_list(head);
-    while (current != null) {
-        int data = current.data;
-        stack.push(data);
-        int reversed_data = reversed_head.data;
-        if (stack.peek() == reversed_data) {
+    Node slow = head;
+    Node fast = head;
+    while (fast != null && fast.next != null) {
+        stack.push(slow.data);
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    if (fast != null) {
+        slow = slow.next;
+    }
+    while (slow != null) {
+        if (stack.peek() == slow.data) {
             stack.pop();
         } else {
             return false;
         }
-        current = current.next;
-        reversed_head = reversed_head.next;
+        slow = slow.next;
     }
     return true;
 }
